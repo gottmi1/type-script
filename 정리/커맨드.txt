@@ -1,0 +1,22 @@
+tsc 파일명.ts
+
+타입스크립트로 작성된 코드를 자바스크립트로 컴파일해줌.
+조건 : 타입스크립트가 글로벌로 설치되어있어야만 가능하다
+
+tsc --init
+tsconfig를 생성
+
+tsconfig가 있는 폴더내에서 tsc를 실행하면 
+폴더내의 모든 ts파일이 js파일로 컴파일된다.
+
+tsc -w
+w는 watch의 약자
+watch모드를 실행하여 동작하는 중엔 tsc를 실행할 필요 없이 저장할 때마다 ts파일의 수정된 내용이 js파일로 컴파일된다.
+
+npm init 으로 패키지.json이 만들어졌다면 이 프로젝트는 앞으로 npm프로젝트라고 부른다.
+
+npm 프로젝트내에서 npx tsc를 실행하면 타입스크립트가 글로벌로 설처되어있는 상태에서 tsc만 실행했을 때와 같은 동작을 한다.
+프로젝트를 만들었으면 처음에 npx tsc --init입력해 줘야 함
+
+package.json에서 script의 test부분을 "build": "tsc"로 바꿔주면 npm run build만 해도 tsc가 자동으로 실행됨.
+
