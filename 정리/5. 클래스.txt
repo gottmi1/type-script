@@ -1,0 +1,62 @@
+- 클래스란?
+
+오브젝트를 찍어내는 청사진.
+ts에서는 클래스도 사용자가 만드는 타입의 하나이다.
+
+- create class
+
+class Person {}
+이렇게만 해도 완성
+보통 대문자로 시작 함.
+new를 통하여 class와 같은 형태를 가진 객체를 찍어낼 수 있다.
+constructor를 이용하면 밖에서 주는 값을 전달할 수도 있음.
+this를 사용해 만들어진 객체를 가리킬 수 있다.
+
+
+- constructor & initialize
+
+class Person {
+  name: stirng;
+}
+이렇게 달랑 name만 적어주면 초기화 되지 않아서 name의 값이 무엇인지 알 수가 없다.
+
+class Person {
+  name: stirng = "jinwon";
+}
+이렇게 값까지 할당해 줘야 한다.
+strict모드가 아니면 에러는 없지만, 값이 undefined가 됨.
+
+만약 class 바깥 런타임 상에서 Person.name에 값을 줘도 class는 그걸 알 방도가 없어서 계속 에러가 뜬다.
+의도적으로 런타임상에서 값을 줘야하는 경우 name!: string; 을 준다. (에러를 띄우지 않겠다)
+!:은 사용에 주의가 필요함.
+
+1. 생성자 함수가 없으면 디폴트 생성자가 불린다.
+2. 개발자가 만든 생성자가 하나라도 있으면 디폴트 생성자는 사라짐.
+3. strict모드에서는 프로퍼티를 선언하는 곳 또는 생성자에서 값을 할당해야 한다.
+4. 3번이 지켜지지 않을 경우 !를 붙여 주의를 표현함.
+5. 클래스의 프로퍼티 값이 정의되지 않으면 결과 값은 undefined
+6. 생성자 안에서는 async를 설정할 수 없다.
+
+
+- 접근 제어자 (Access Modifiers)
+
+public, private등 java와 같은 동작을 함.
+디폴트 설정은 public임.
+protected 라는 접근 제어자는 외부에서는 불가능하지만 상속 관계인 데에선 접근할 수가 있다.
+private 프로퍼티를 작성할 땐 _props 처럼 이름 앞에 언더바를 붙이는 관습이 있따.
+
+
+- initialize in constructor parameters
+
+class Person {
+  constructor(public name: string, private age: number) { }
+}
+
+컨스트럭터로 한 번에 설정 가능
+
+
+- Getters & Setters
+
+.name과 같이 값을 받아오는 일을 하는 함수를 getter
+.name = "jinwon kim"처럼 값을 세팅해주는 일을 하는 함수를 setter
+라고 함.
