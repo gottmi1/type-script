@@ -1,0 +1,99 @@
+- interface란
+
+인터페이스라는 건 ts에서만 존재한다. 컴파일 됐을 때는 사라지게 됨. 컴파일 타임에서만 사용된다.
+
+그러나 인터페이스가 쓰였던 곳은 모두 원래 interface에 담긴 객체로 대체되기 때문에 문제가 없다.
+
+
+- optional property
+
+있을 수도 있고 없을 수도 있는 프로퍼티에는 
+name?: string 처럼 프로퍼티명과 콜론 사이에 물음표를 찍어준다.
+
+인덱서블 프로퍼티
+
+인터페이스에 [index: string]:any를 넣어주면
+어떤 프로퍼티든 가질 수 있게 된다.
+
+
+- function in interface
+
+hello: function (): void {
+    console.log(`안녕하세요! ${this.name}입니다`)
+  }
+
+  hello(): void {
+    console.log(`안녕하세요! ${this.name}입니다`)
+  }
+
+함수 안에서 this를 사용할 수 있으면 이런식으로 만들 수 있다.
+this가 전역 값을 가리키는 화살표함수는 사용할 수 없음.
+
+
+- class implements interface
+
+interface IPerson1 {
+  name: string;
+  age?: number;
+  hello(): void;
+}
+라는 interface가 있을 때
+
+class Person implements IPerson1 {
+  name: string;
+  age?: number | undefined;
+  constructor(name: string) {
+    this.name = name;
+  }
+  hello(): void {
+    console.log(`${this.name}입니다1`)
+  }
+}
+그 interface를 implements하는 클래스를 만들 수가 있다.
+빠른 수정으로 필요한 부분을 자동작성 하고, 빨간 줄이 뜨는 부분은 constructor해준다.
+
+const person: IPerson1 = new Person("jinwon");
+그러면 그 클래스로 새로운 객체를 만들 수가 있다. 이 때 타입에 그 클래스가 implements한 인터페이스 명을 써주는 것이 좋다.
+이러면 person. 했을 때 IPerson1의 프로퍼티나 메서드에 접근할 수 있다.
+
+
+- interface extends interface
+
+interface IPerson2 {
+  name: string;
+  age?: number;
+}
+
+interface IKorean extends IPerson2 {
+  city: string;
+}
+확장,상속. React.Component를 상속받아서 클래스형 컴포넌트를 만드는 것처럼 더 큰 것에서 기본 프로퍼티를 상속받고 나머지는 extends받은 곳에서 추가하는 개념
+
+
+- function interface
+
+interface7.ts 참조
+
+
+- readOnly interface properties
+
+readonly gender: string;
+
+이런식으로 gender 프로퍼티를 readonly 값으로 설정할 수 있다.
+readonly값은 이후 변경(재할당)이 불가능하다.
+컴파일 타임에 에러를 발생시켜서 코드를 문제 없게 만드는 것이 목표이기 때문에, 더 엄격한 체크가 가능하다.
+
+타입 스크립트를 사용하는 가장 큰 이유 코드에 의도를 담아 사용자에게 전달하는 것이기 때문에 중요하다고 할 수 있다.
+
+
+- Type Alias vs interface 비교
+
+자잘한 차이점이 몇 있는데,
+interface에서만 사용할 수 있는 Declaration Merging이라는 기능이 있다.
+이는 같은 이름의 인터페이스를 만들어서 사용하더라도 나중에 하나로 합쳐지는 것임.
+같은 이름의 인터페이스들의 프로퍼티들이 하나로 합쳐짐.
+Alias에선 불가능하다.
+기존에 있던 인터페이스를 사용하는데 내가 추가하고싶은 게 있을 경우 사용하면 좋을 듯.
+
+기본적으로 type Alias는 유니온타입등을 설정해서 새로운 타입명을 만드는 데 사용하는 것이 좋고,
+interface는 새로운 타입(객체)을 만들어 내는 것이라고 보는 것이 좋을 것 같다.
