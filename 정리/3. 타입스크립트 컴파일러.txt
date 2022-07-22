@@ -1,0 +1,90 @@
+- compilation context
+
+ts파일을 js파일로 변환하는 컴파일러가 어떤 파일을 어떤 방식으로 컴파일 하는지에 관한 맥락 이라고 생각하면 좋을 듯.
+tsconfig.json에 설정된 값들을 이해하고 입맛에 맞춰 수정할 수 있는 능력이라고 보면 되겠다.
+
+- tsconfig
+
+최상위의 프로퍼티들
+ㆍcompileOnSave
+ㆍextends
+
+내용이 많음. 어떤 설정으로 컴파일 할건지 자세히 들어있다.
+ㆍcompileOptions
+
+어떤 파일을 컴파일 할건지 결정
+ㆍfiles
+ㆍinclude
+ㆍexclude
+
+ㆍreferences
+
+
+
+ㆍcompileOnSave
+세이브하면 자동으로 컴파일을 시켜주는 옵션이다.
+default값은 false.
+
+ㆍextends
+다른 파일을 상속받을 때 사용.
+string값이 들어와야 하고, 이 값은 현재 tsconfig에서 상대경로로 상속받을 파일명을 적으면 된다.
+github에 많이 사용되는 설정도 올라와있고 npm i --save-dev @tsconfig/deno로 받아서 사용할 수도 있다.
+이 때 경로는 @tsconfig/deno/tsconfig.json
+
+
+- files & include & exclude
+중요한 역할을 하는 세가지.
+세가지 전부 설정이 없으면 모든 파일을 컴파일하려고 한다.
+exclude는 컴파일에서 제외될 것들인데, files가 더 강해서 중복으로 있다면 컴파일 되게 됨.
+
+
+files
+상대 혹은 절대경로의 리스트 배열.
+excldue보다 강함.
+
+include,exclude
+glob패턴(.gitignore와 비슷)
+
+include 
+exclude보다 약함.
+*같은 걸 사용하면 .ts/.tsx/.d.ts만 include함.(allowJS)
+
+exclude
+성정 안 하면 기본으로
+node_modules
+bower_components
+jspm_packages
+<outDir>
+네 가지를 제외시킴.
+<outDir>는 항상 제외시킨다(include에 있어도)
+
+
+= compileOptions
+TypeRoots , types
+
+리액트를 설치하고 import React from 'react'을 하면 
+라이브러리는 설치되었으나 ts에서 사용하기에 타입 설정이 되어있지않다고 함.
+npm i --save-dev @types/react을 하면 에러 없이 설정된다.
+
+@types
+아무 설정을 안 하면 node_modules/@types 라는 모든 경로를 찾아서 사용
+
+TypeRoots를 사용하면
+배열 안에 들어있는 경로들 아래서만 가져온다.
+
+types를 사용하면
+배열 안의 모듈 혹은 node_modules/@types/ 안의 모듈 이름에서 찾아온다.
+[]을 입력하면 이 시스템을 사용하지 않겠다는 뜻.
+
+두 개가 같이 사용되진 않는다.
+
+target , lib
+
+target은 어떤 버전의 ES를 사용할지에 대한 정보다. 빌드에 결과물을 어떤 버전으로 할 것인가 정하는 것
+ES3처럼 낮은 버전으로 해놓으면 ts에서 화살표함수를 작성해도 컴파일 과정에서 일반함수로 대체됨
+
+lib은 기본 타입 definition 라이브러리를 어떤 것을 사용할 것인가
+지정하지 않았을 때는 target 따라 자동으로 지정됨.
+현재 버전에선 dom,es6,dom.intreable,scripthost 를 사용함.
+lub를 지정하면 그 lib배열로만 라이브러리를 사용함.
+이 때 빈 배열을 주면 not definition fount 에러가 뜬다.
