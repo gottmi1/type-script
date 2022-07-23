@@ -1,0 +1,114 @@
+- Generic
+
+function helloGeneric<T>(msg: T): T {
+  return msg;
+}
+
+받는 인자에 따라 타입을 적절히 추론해주는 기능.
+받는 인자가 "a"면 T에 "a"가 대입되어 "a"타입의 리턴값을 가짐.
+
+any는 뭐든 받아서 뭐든 리턴하는데 입력에 따라 달라지지 않고 끝까지 any타입임.
+반면 generic은 입력값에 따라 달라지게 된다.
+
+- Generic basic
+
+function helloBasic<T>(msg: T): T {
+  return msg;
+}
+
+helloBasic<string>("문자열");
+먼저 함수를 만들고 호출할 때 <>안에 타입을 넣어주는 것으로 입력 타입을 제한할 수도 있다.
+
+이걸 지정하면 지정한 타입을 갖고, 지정하지 않으면 타입을 자동으로 추론한다.
+
+- Generic Array & Tuple
+
+function helloArray<T>(msg: T[]): T {
+  return msg[0];
+}
+제네릭을 배열로 사용하겠다는 코드이다.
+helloArray(["hello", 27])
+이 때 이런 걸 실행하면, 결국 리턴 받는 값은 T[0]이기 때문에 string타입이어야 하는데, 리턴타입은 string | number가 됨. 
+그래서 접근가능한 메서드가 생각한 것과 다를 수 있다.(의도하지 않은 결과)
+
+function helloTuple<T, K>(msg: [T, K]): T {
+  return msg[0];
+}
+
+helloTuple(["문자열", 22])
+반면에 <>사이에 두 개 이상의 매개변수를 넣고 msg를 [매개변수들]로 묶으면, 리턴 받는 인덱스에 따라 정확한 타입이 추론된다.
+예를들어 msg[0]은 string이겠고 [1]은 number일 것임. 이렇게 되면 string.legnth number.toString등 타입별로 접근 가능한 메서드들에 접근할 수가 있다.
+
+상황에 맞게 쓰면 됨..
+
+
+- Generic Funtion
+참고 : generic4.ts
+
+타입 알리아스보다 인터페이스를 쓰는 게 훨씬 편한 것 같다.
+기존 함수와 다른게 매개변수 부분에 () 대신 <T>(props : T): T 를 넣어주기만 하면 된다..
+<T>(props : T):T만 기억하자..
+
+
+- Generic Class
+
+클래스에서도 제네릭을 설정할 수 있다.
+class 클래스명<T,K> {}
+이런 식
+
+class Person<T, K> {
+  private _name: T;
+  private _age: K;
+
+  constructor(name: T, age: K) {
+    this._name = name;
+    this._age = age
+  }
+}
+
+const p1 = new Person("Jinwon", 27);
+타입을 알아서 추론
+const p1 = new Person(1, 2);
+해도 상관 없음
+
+const p2 = new Person<number, number>(23, 33);
+const p3 = new Person<string, string>("23", "33");
+
+생성자에서도 제네릭으로 T와K의 타입을 각각 설정해줄 수 있다.
+
+
+- Generic with extends
+
+제네릭에서 사용할 땐 extends는 상속이 아니다.
+제네릭을 줄 때
+
+class Person<T extends string | number> {}
+
+이렇게 준다면, string | number의 유니온타입에서 T를 상속 받는 게 아니라,
+T는 string 혹은 number의 타입만을 가질 수 있다는 의미이다.. 크게 다른 느낌은 없지만, 하튼 상속과는 다름
+
+팁 사용할 때 문제가 있을 수 있기 때문에 타입은 항상 되도록 가장 작은 범위로 제한해 주는 것이 좋다.
+
+<T>만 달랑 있으면 뭘 넣든 상관 없겠구나 하겠지만 extends로 타입을 제한해주면 사용자 경험을 향상시킬 수 있다.
+앞으로 제네릭을 사용할 때 항상 한 번 쯤은 고려해보는 게 좋을 것 같다.
+
+
+- keyof & type lookup 기능
+참고: generic7
+
+interface IPerson {
+  name: string;
+  age: number;
+}
+
+type Keys = keyof IPerson;
+const keys: Keys = "age";
+
+이렇게 붙이면 Keys의 값은 type이 되는데, 그게 IPerson의 프로퍼티인 name | age 타입이 된다.
+
+IPerson[keyof IPerson] => 
+iPerson['name'|'age'] => 
+iPerson["name"] | IPerson["age"] =>
+결국 string | number
+
+어렵다 다음에 한 번 더 확인해 보자.
