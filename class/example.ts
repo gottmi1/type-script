@@ -25,15 +25,22 @@
 // }
 
 class Person {
-  constructor(private _name: string, private _age: number) { }
+  public readonly name: string = "jinwon";
+  // 퍼블릭이라 밖에서 접근 가능하지만 readonly라서 변경할 수 없게 만든다
+  private readonly country: string;
+  // 프라이빗이라 안에서는 바꿀 수 있어야 하는 상황에서도 readonly로 인해 변경할 수 없다.
+
+  constructor(private _name: string, private _age: number) {
+    this.country = "Korea";
+    // 위에서 선언만 해 놓은 상태이기 때문에 할당만 가능하다.
+  }
   // prviate항목은 출력은 가능하지만 .으로 접근할 수 없음
-  get name() {
-    //
-    return this._name + " kim";
-  }
-  set name(name: string) {
-    this._name = name;
-  }
+  // get name() {
+  //   return this._name + " kim";
+  // }
+  // set name(name: string) {
+  //   this._name = name;
+  // }
   // 얘를 실행할 땐 함수를 실행() 시키지 않고 그냥 불러온다.
 }
 
@@ -41,5 +48,5 @@ const p1 = new Person("jinwon", 27);
 
 console.log(p1)
 console.log(p1.name);
-p1.name = "won kim";
+// p1.name = "won kim";
 console.log(p1);
