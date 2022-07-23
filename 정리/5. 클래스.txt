@@ -78,3 +78,59 @@ readonly는 변경할 수 없는 값이다
 퍼블릭이든 프라이빗이든 변경할 수 없다.
 리드온리라면 클래스에서 선언만 해 놓고 컨스터럭터에서 값을 할당하는 것 까지만 가능
 ★프로퍼티를 초기값으로 고정하고 바꾸고 싶지 않을 때 주로 사용한다.
+
+
+- index Signatures in class
+
+프로퍼티가 고정이 아니라 동적으로 프로퍼티 명이 들어와야 할 때 고려해야할 기능.
+
+class Students {
+  [index: string]: 'male' | 'female';
+}
+예를 들어 이런 클래스가 있고 이 클래스로 a 오브젝트를 만들었다고 가정하면,
+
+a.jinwon = 'male' 했을 때
+a에 jinwon이라는 props가 'male'이라는 값으로 들어가게 된다.
+
+앞에 [index:string]은 props가 문자열 형태라는 걸 정한 거고, 값은 'male', 'female' 두 개만 할당 가능함.
+
+
+
+
+-- Static Properties & Methods
+
+class Person {
+  public static hello() {
+    console.log('hello')
+  }
+}
+
+const p1 = new Person();
+
+p1.hello();
+Person.hello();
+이 경우,
+hello가 static메서드가 아닐 때 p1에서 접근하는 것만 가능하고
+hello가 static메서드일 때는 Person에서만 접근할 수 있다.
+
+-- Singletons
+
+싱글톤 패턴이란 static을 사용하기에 좋은? 패턴이다.
+단일 객체 패턴으로 한 클래스로는 하나의 객체만 만들어야 하는 패턴임.
+기억할 만한 건 컨스터럭터를 프라이빗으로 설정하여 new키워드로 새 객체를 만드는 것을 막아야하고
+static으로 props를 줘서 이름을 여러개 줘도 모두 같은 객체를 가리켜야 함.
+
+
+
+- 상속(inheritance)
+
+아무 것도 추가하지 않고 그냥 extend로 상속만 받으면 부모 클래스의 형태와 똑같은 형태가된다.
+
+protected와 private를 적절히 사용하여 각자의 영역에서 다른 영역으로 전파되지 않게 막는 것이 중요하다.
+자식 클래스에서 컨스트럭터를 사용하려면 가장 먼저 super로 선언된 변수에 값을 할당해주어야 한다.
+
+- Abstract Classes
+
+이 키워드를 이용하면 완전하지 않은 class를 포함할 수 있다.
+완전하지 않은 class는 new키워드를 사용해 객체를 만들 수 없음.
+어느 때 사용하는진 모르겠는데 하여튼 이 손상된 클래스를 상속받아서 그 부분을 고쳐서 사용한다.
